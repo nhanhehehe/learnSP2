@@ -27,7 +27,7 @@ public class UserService {
 
 
     public User updateUser(String id, UserUpdateRequest request) {
-        User user = findById(id);
+        User user =  userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));;
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -38,24 +38,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findById(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
     public void deleteUserById(String id) {
-        User user = findById(id);
+        User user =  userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
         userRepository.delete(user);
     }
 
     public User getUserById(String id) {
-       return findById(id);
+       return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
     }
 
     public List<User> getAllUsers() {
-        return findAll();
+        return userRepository.findAll();
     }
 }
