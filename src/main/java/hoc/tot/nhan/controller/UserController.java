@@ -7,6 +7,8 @@ import hoc.tot.nhan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -21,5 +23,20 @@ public class UserController {
     @PostMapping("/{userId}")
     User updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         return userService.updateUser(userId, userUpdateRequest);
+    }
+
+    @DeleteMapping("/{userId}")
+    void deletedUserById(@PathVariable String userId) {
+        userService.deleteUserById(userId);
+    }
+
+    @GetMapping
+    List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/{userId}")
+    User getUserById(@PathVariable String userId) {
+        return userService.getUserById(userId);
     }
 }

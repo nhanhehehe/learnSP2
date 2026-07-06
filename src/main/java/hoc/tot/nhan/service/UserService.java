@@ -7,6 +7,8 @@ import hoc.tot.nhan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -38,5 +40,22 @@ public class UserService {
 
     public User findById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUserById(String id) {
+        User user = findById(id);
+        userRepository.delete(user);
+    }
+
+    public User getUserById(String id) {
+       return findById(id);
+    }
+
+    public List<User> getAllUsers() {
+        return findAll();
     }
 }
