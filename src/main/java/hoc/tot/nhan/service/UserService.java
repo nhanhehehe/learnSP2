@@ -27,7 +27,7 @@ public class UserService {
 
 
     public User updateUser(String id, UserUpdateRequest request) {
-        User user =  userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));;
+        User user =  getUserById(id);
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
