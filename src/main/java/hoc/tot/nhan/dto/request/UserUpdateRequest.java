@@ -1,17 +1,8 @@
-package hoc.tot.nhan.entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package hoc.tot.nhan.dto.request;
 
 import java.time.LocalDate;
 
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+public class UserUpdateRequest {
     private String username;
     private String password;
     private String email;
@@ -19,12 +10,12 @@ public class User {
     private String lastName;
     private LocalDate dob;
 
-    public String getId() {
-        return id;
+    public LocalDate getDob() {
+        return dob;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 
     public String getUsername() {
@@ -65,13 +56,5 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
     }
 }
