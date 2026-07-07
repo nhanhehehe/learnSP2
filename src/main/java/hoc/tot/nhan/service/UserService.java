@@ -3,6 +3,8 @@ package hoc.tot.nhan.service;
 import hoc.tot.nhan.dto.request.UserCreationRequest;
 import hoc.tot.nhan.dto.request.UserUpdateRequest;
 import hoc.tot.nhan.entity.User;
+import hoc.tot.nhan.exception.AppException;
+import hoc.tot.nhan.exception.ErrorCode;
 import hoc.tot.nhan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class UserService {
 
     public User createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("User with username " + request.getUsername() + " already exists");
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         User user = new User();
 

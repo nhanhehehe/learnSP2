@@ -8,11 +8,12 @@ import java.time.LocalDate;
 
 public class UserCreationRequest {
     @NotBlank
+    @Size(min = 3, message = "USERNAME_INVALID")
     private String username;
     @NotBlank
-    @Size(min = 8, message = "password must be at least 8 characters")
+    @Size(min = 8, message = "PASSWORD_INVALID")
     private String password;
-    @Email
+    @Email(message = "EMAIL_INVALID")
     @NotBlank
     private String email;
     @NotBlank

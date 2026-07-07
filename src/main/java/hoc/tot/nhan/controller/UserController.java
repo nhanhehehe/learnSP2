@@ -1,5 +1,6 @@
 package hoc.tot.nhan.controller;
 
+import hoc.tot.nhan.dto.request.ApiResponse;
 import hoc.tot.nhan.dto.request.UserCreationRequest;
 import hoc.tot.nhan.dto.request.UserUpdateRequest;
 import hoc.tot.nhan.entity.User;
@@ -17,13 +18,19 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    User createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
-        return userService.createUser(userCreationRequest);
+    ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setMessage("success");
+        response.setResult(userService.createUser(userCreationRequest));
+        return response;
     }
 
     @PostMapping("/{userId}")
-    User updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return userService.updateUser(userId, userUpdateRequest);
+    ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setMessage("success");
+        response.setResult(userService.updateUser(userId, userUpdateRequest));
+        return response;
     }
 
     @DeleteMapping("/{userId}")
@@ -32,12 +39,19 @@ public class UserController {
     }
 
     @GetMapping
-    List<User> getAllUsers() {
-        return userService.getAllUsers();
+    ApiResponse<List<User>> getAllUsers() {
+        ApiResponse<List<User>> response = new ApiResponse<>();
+        response.setMessage("success");
+        response.setResult(userService.getAllUsers());
+        return response;
+
     }
 
     @GetMapping("/{userId}")
-    User getUserById(@PathVariable String userId) {
-        return userService.getUserById(userId);
+    ApiResponse<User> getUserById(@PathVariable String userId) {
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setMessage("success");
+        response.setResult(userService.getUserById(userId));
+        return response;
     }
 }
