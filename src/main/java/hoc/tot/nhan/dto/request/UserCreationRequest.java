@@ -15,9 +15,7 @@ public class UserCreationRequest {
     @Email
     @NotBlank
     private String email;
-    @NotBlank
     private String firstName;
-    @NotBlank(message = "this must not be blank")
     private String lastName;
     private LocalDate dob;
 
