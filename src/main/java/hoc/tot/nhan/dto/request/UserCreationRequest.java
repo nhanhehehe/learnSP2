@@ -1,12 +1,23 @@
 package hoc.tot.nhan.dto.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class UserCreationRequest {
+    @NotBlank
     private String username;
+    @NotBlank
+    @Size(min = 8, message = "password must be at least 8 characters")
     private String password;
+    @Email
+    @NotBlank
     private String email;
+    @NotBlank
     private String firstName;
+    @NotBlank(message = "this must not be blank")
     private String lastName;
     private LocalDate dob;
 

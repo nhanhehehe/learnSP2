@@ -15,11 +15,16 @@ public class UserService {
     private UserRepository userRepository;
 
     public User createUser(UserCreationRequest request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("User with username " + request.getUsername() + " already exists");
+        }
         User user = new User();
+
+        user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setUsername(request.getUsername());
+
         user.setPassword(request.getPassword());
         user.setDob(request.getDob());
         return userRepository.save(user);
@@ -39,12 +44,12 @@ public class UserService {
     }
 
     public void deleteUserById(String id) {
-        User user =  userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
+        User user =  userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.delete(user);
     }
 
     public User getUserById(String id) {
-       return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id " + id + " not found"));
+       return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public List<User> getAllUsers() {
