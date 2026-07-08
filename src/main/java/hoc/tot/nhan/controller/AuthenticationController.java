@@ -20,12 +20,10 @@ public class AuthenticationController {
 
     @PostMapping("/log-in")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        Boolean validResult = authenticationService.authenthicate(request);
+        var validResult = authenticationService.authenthicate(request);
 
         return ApiResponse.<AuthenticationResponse>builder()
-                .result(AuthenticationResponse.builder()
-                        .authenticated(validResult)
-                        .build())
+                .result(validResult)
                 .build();
     };
 }
