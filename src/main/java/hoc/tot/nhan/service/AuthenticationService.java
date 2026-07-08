@@ -2,9 +2,13 @@ package hoc.tot.nhan.service;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import hoc.tot.nhan.dto.request.AuthenticationRequest;
+import hoc.tot.nhan.dto.request.IntrospectRequest;
 import hoc.tot.nhan.dto.response.AuthenticationResponse;
+import hoc.tot.nhan.dto.response.IntrospectResponse;
 import hoc.tot.nhan.entity.User;
 import hoc.tot.nhan.exception.AppException;
 import hoc.tot.nhan.exception.ErrorCode;
@@ -17,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -46,6 +51,20 @@ public class AuthenticationService {
                 .authenticated(true)
                 .build();
 
+    }
+
+    public IntrospectResponse verifyToken (IntrospectRequest request) throws JOSEException, ParseException {
+        String token = request.getToken();
+
+        JWSVerifier verifier = new MACVerifier(secretKey.getBytes());
+
+        SignedJWT jwt = SignedJWT.parse(token);
+        Boolean expiryTime = jwt.getJWTClaimsSet().getExpirationTime().after(new Date());
+        Boolean verified = jwt.verify(verifier);
+
+        return IntrospectResponse.builder()
+                .Valid(verified && expiryTime)
+                .build();
     }
 
     public String generateToken(String username) {
