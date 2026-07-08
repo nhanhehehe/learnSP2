@@ -12,7 +12,7 @@ public class GlobalException {
 
     // exception chua biet cho cai gi
     @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(Exception e) {
+    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException e) {
         ErrorCode errorCode = ErrorCode.UNCATEGORIZED_CODE;
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setMessage(errorCode.getMessage());
@@ -21,7 +21,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(value = AppException.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(AppException e) {
+    ResponseEntity<ApiResponse> handlingAppException(AppException e) {
         ErrorCode errorCode = e.getErrorCode();
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setMessage(errorCode.getMessage());
