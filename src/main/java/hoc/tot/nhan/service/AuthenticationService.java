@@ -9,7 +9,6 @@ import hoc.tot.nhan.dto.request.AuthenticationRequest;
 import hoc.tot.nhan.dto.request.IntrospectRequest;
 import hoc.tot.nhan.dto.response.AuthenticationResponse;
 import hoc.tot.nhan.dto.response.IntrospectResponse;
-import hoc.tot.nhan.entity.User;
 import hoc.tot.nhan.exception.AppException;
 import hoc.tot.nhan.exception.ErrorCode;
 import hoc.tot.nhan.repository.UserRepository;
@@ -17,6 +16,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,10 @@ public class AuthenticationService {
 
     UserRepository userRepository;
 
-    protected final static String secretKey = "368ab53ca186843c70301a5c3f75a0f974443d11f6e3d21163268adcdcb7e25a";
+    @NonFinal
+    // annotation nay khong phai cua lombok
+    @Value("${jwt.signerKey}")
+    protected String SIGNER_KEY;
 
     public AuthenticationResponse authenthicate (AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername())
@@ -56,7 +60,7 @@ public class AuthenticationService {
     public IntrospectResponse verifyToken (IntrospectRequest request) throws JOSEException, ParseException {
         String token = request.getToken();
 
-        JWSVerifier verifier = new MACVerifier(secretKey.getBytes());
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
         SignedJWT jwt = SignedJWT.parse(token);
         Boolean expiryTime = jwt.getJWTClaimsSet().getExpirationTime().after(new Date());
@@ -83,7 +87,7 @@ public class AuthenticationService {
         JWSObject jwsObject = new JWSObject(jwsHeader, payload);
 
         try {
-            jwsObject.sign(new MACSigner(secretKey.getBytes()));
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
             return jwsObject.serialize();
         } catch (JOSEException e) {
             throw new RuntimeException(e);
