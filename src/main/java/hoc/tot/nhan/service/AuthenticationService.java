@@ -14,11 +14,8 @@ import hoc.tot.nhan.exception.ErrorCode;
 import hoc.tot.nhan.repository.UserRepository;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +29,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService {
 
+    private final PasswordEncoder passwordEncoder;
     UserRepository userRepository;
 
     @NonFinal
@@ -43,7 +41,6 @@ public class AuthenticationService {
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         var authenticated =  passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if (!authenticated) {
