@@ -38,6 +38,7 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    // config key va algorithm de spring verify token
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKey = new SecretKeySpec(SIGNER_KEY.getBytes(), "HS512");
