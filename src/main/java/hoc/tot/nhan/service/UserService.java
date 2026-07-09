@@ -44,7 +44,7 @@ public class UserService {
 
         // create user
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
 
         // update user request to user
         userMapper.updateUser(user, request);
@@ -54,13 +54,14 @@ public class UserService {
     }
 
     public void deleteUserById(String id) {
-        User user =  userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        User user =  userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
         userRepository.delete(user);
     }
 
     public UserResponse getUserById(String id) {
-        return userMapper.toUserResponse(userRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("User not found")));
+        User use = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
+
+        return userMapper.toUserResponse(use);
     }
 
     public List<UserResponse> getAllUsers() {
