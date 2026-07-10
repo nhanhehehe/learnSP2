@@ -67,10 +67,9 @@ public class UserController {
 
     @GetMapping("/myInfo")
     ApiResponse<UserResponse> getMyInfo() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
 
         return ApiResponse.<UserResponse>builder()
-                .result(userService.getUserByUsername(authentication.getName()))
+                .result(userService.getMyInfo())
                 .build();
     }
 }

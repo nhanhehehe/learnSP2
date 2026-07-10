@@ -1,6 +1,7 @@
 package hoc.tot.nhan.service;
 
 import hoc.tot.nhan.Role;
+import hoc.tot.nhan.dto.request.ApiResponse;
 import hoc.tot.nhan.dto.request.UserCreationRequest;
 import hoc.tot.nhan.dto.request.UserUpdateRequest;
 import hoc.tot.nhan.dto.response.UserResponse;
@@ -80,9 +81,11 @@ public class UserService {
                 .map(user -> userMapper.toUserResponse(user)).toList();
         }
 
-    public UserResponse getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
+    public UserResponse getMyInfo() {
+        var name = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUsername(name)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         return userMapper.toUserResponse(user);
     }
