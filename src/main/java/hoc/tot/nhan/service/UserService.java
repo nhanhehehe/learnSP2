@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 
+@EnableMethodSecurity
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -75,13 +79,17 @@ public class UserService {
         return userMapper.toUserResponse(use);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
+        log.info("get all users method");
     // áp dụng stream và map
         return userRepository.findAll().stream()
                 .map(user -> userMapper.toUserResponse(user)).toList();
-        }
+    }
 
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getMyInfo() {
+        log.info("get my info method");
         var name = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userRepository.findByUsername(name)

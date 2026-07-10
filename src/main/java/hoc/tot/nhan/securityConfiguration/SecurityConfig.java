@@ -34,7 +34,7 @@ public class SecurityConfig {
                 authorizeRequests.requestMatchers(HttpMethod.POST, allowedEndpoints)
                         .permitAll()
                         // hasAuthority(prex_role) or hasRole(role)
-                        .requestMatchers(HttpMethod.GET, "/users").hasRole(Role.ADMIN.name())
+//                        .requestMatchers(HttpMethod.GET, "/users").hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated());
 
         // ouath2 resource for bearer jwt
