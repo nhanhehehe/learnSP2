@@ -5,12 +5,17 @@ import hoc.tot.nhan.dto.request.UserCreationRequest;
 import hoc.tot.nhan.dto.request.UserUpdateRequest;
 import hoc.tot.nhan.dto.response.UserResponse;
 import hoc.tot.nhan.entity.User;
+import hoc.tot.nhan.exception.AppException;
+import hoc.tot.nhan.exception.ErrorCode;
 import hoc.tot.nhan.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     UserService userService;
 
     @PostMapping
@@ -39,24 +45,32 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    void deletedUserById(@PathVariable String userId) {
+    ApiResponse<String > deleteUser(@PathVariable String userId) {
         userService.deleteUserById(userId);
+        return ApiResponse.<String>builder()
+                .result("deleted user successfully")
+                .build();
     }
 
     @GetMapping
     ApiResponse<List<UserResponse>> getAllUsers() {
-        ApiResponse<List<UserResponse>> response = new ApiResponse<>();
-        response.setMessage("success");
-        response.setResult(userService.getAllUsers());
-        return response;
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(auth -> {log.info(auth.getAuthority());});
+
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers())
+                .build();
 
     }
 
-    @GetMapping("/{userId}")
-    ApiResponse<UserResponse> getUserById(@PathVariable String userId) {
-        ApiResponse<UserResponse> response = new ApiResponse<>();
-        response.setMessage("success");
-        response.setResult(userService.getUserById(userId));
-        return response;
+    @GetMapping("/myInfo")
+    ApiResponse<UserResponse> getMyInfo() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserByUsername(authentication.getName()))
+                .build();
     }
 }
