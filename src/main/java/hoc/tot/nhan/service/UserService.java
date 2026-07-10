@@ -59,7 +59,6 @@ public class UserService {
 
         // update user request to user
         userMapper.updateUser(user, request);
-
         // return user to user response
         return userMapper.toUserResponse(userRepository.save(user));
     }
