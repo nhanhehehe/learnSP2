@@ -1,4 +1,4 @@
-package hoc.tot.nhan;
+package hoc.tot.nhan.enums;
 
 public enum Role {
     ADMIN,

@@ -20,8 +20,8 @@ public class UserCreationRequest {
      String password;
     @Email(message = "EMAIL_INVALID")
      String email;
-     String firstName;
+     String firstname;
     @NotBlank(message = "this must not be blank")
-     String lastName;
+     String lastname;
      LocalDate dob;
 }

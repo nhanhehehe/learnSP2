@@ -1,11 +1,9 @@
 package hoc.tot.nhan.securityConfiguration;
 
-import hoc.tot.nhan.Role;
+import hoc.tot.nhan.enums.Role;
 import hoc.tot.nhan.entity.User;
 import hoc.tot.nhan.repository.UserRepository;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
