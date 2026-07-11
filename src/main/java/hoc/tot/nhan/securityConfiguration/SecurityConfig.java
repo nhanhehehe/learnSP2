@@ -40,9 +40,11 @@ public class SecurityConfig {
         // ouath2 resource for bearer jwt
         httpSecurity.oauth2ResourceServer((oauth2)->
                 oauth2.jwt((jwtConfig)-> jwtConfig.decoder(jwtDecoder())
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter)
-                )
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .authenticationEntryPoint(new jwtAuthenticationEntryPoint())
         );
+
+
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();

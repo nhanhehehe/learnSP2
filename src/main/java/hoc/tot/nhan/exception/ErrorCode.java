@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatusCode;
 
 @Getter
 public enum ErrorCode {
-    UNCATEGORIZED_CODE(69, "uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
+    UNCATEGORIZED_EXCEPTION(69, "uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALIDKEY(99, "uncategorized exception", HttpStatus.BAD_REQUEST ),
     USER_EXISTED(1001, "user existed", HttpStatus.BAD_REQUEST),
     USERNAME_INVALID(1003, "username must be at least 3 characters", HttpStatus.BAD_REQUEST),
@@ -24,7 +24,7 @@ public enum ErrorCode {
         this.httpStatusCode = httpStatusCode;
     }
 
-    private int code;
-    private HttpStatusCode httpStatusCode;
-    private String message;
+    private final int code;
+    private final HttpStatusCode httpStatusCode;
+    private final String message;
 }
