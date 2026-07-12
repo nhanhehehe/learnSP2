@@ -33,11 +33,6 @@ public class PermissionService {
     public List<PermissionResponse> getAll() {
         var permissions = permissionRepository.findAll();
 
-        List<PermissionResponse> permissionResponse = new ArrayList<>();
-
-        permissions.forEach(permission ->
-                permissionResponse.add(permissionMapper.toPermissionResponse(permission)));
-
-        return permissionResponse;
+        return permissions.stream().map(permissionMapper::toPermissionResponse).toList();
     }
 }

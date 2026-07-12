@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,7 +26,7 @@ public class User {
     String email;
     String firstName;
     String lastName;
-    HashSet<String> roles;
+    Set<String> roles;
     LocalDate dob;
 
     
