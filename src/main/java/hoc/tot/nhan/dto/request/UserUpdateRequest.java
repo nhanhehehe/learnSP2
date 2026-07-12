@@ -1,5 +1,6 @@
 package hoc.tot.nhan.dto.request;
 
+import hoc.tot.nhan.validator.DobConstraint;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +18,7 @@ public class UserUpdateRequest {
      String password;
      String firstname;
      String lastname;
+     @DobConstraint(min = 18, message = "INVALID_YEAR")
      LocalDate dob;
      List<String> roles;
 }
