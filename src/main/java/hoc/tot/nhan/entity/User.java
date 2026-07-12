@@ -1,9 +1,6 @@
 package hoc.tot.nhan.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,10 +21,13 @@ public class User {
     String username;
     String password;
     String email;
-    String firstName;
-    String lastName;
-    Set<String> roles;
+    String firstname;
+    String lastname;
     LocalDate dob;
+
+
+    @ManyToMany
+    Set<Role> roles;
 
     
 }

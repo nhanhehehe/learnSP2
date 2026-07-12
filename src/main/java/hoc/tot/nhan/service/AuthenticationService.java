@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.StringJoiner;
 
 @RequiredArgsConstructor
@@ -81,7 +82,7 @@ public class AuthenticationService {
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
                 // custom claim
-                .claim("scope", buildScope(user.getRoles()))
+                .claim("scope", buildScope(user))
                 .build();
         // payload gom cac claim ma claim la cac data trong body
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -97,12 +98,20 @@ public class AuthenticationService {
 
     }
 
-    public String buildScope(HashSet<String> roles) {
-        StringJoiner stringJointer = new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(roles)) {
-            roles.forEach(role -> stringJointer.add(role));
-        }
+    public String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
 
-        return stringJointer.toString();
+        if (!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(role -> {
+                stringJoiner.add("ROLE_" + role.getName());
+                if (!CollectionUtils.isEmpty(role.getPermissions())) {
+                        role.getPermissions().forEach(permission -> {
+                            stringJoiner.add(permission.getName());
+                        });
+                    }
+                }
+            );
+        }
+        return stringJoiner.toString();
     }
 }

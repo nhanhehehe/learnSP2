@@ -36,7 +36,7 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("/{userId}")
+    @PutMapping("/{userId}")
     ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         ApiResponse<UserResponse> response = new ApiResponse<>();
         response.setMessage("success");

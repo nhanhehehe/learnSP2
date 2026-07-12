@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -14,8 +15,8 @@ import java.util.HashSet;
 public class UserResponse {
     String id;
     String username;
-    String firstName;
-    String lastName;
+    String firstname;
+    String lastname;
     LocalDate dob;
-    HashSet<String> roles;
+    Set<RoleResponse> roles;
 }

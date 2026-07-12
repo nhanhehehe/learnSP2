@@ -8,6 +8,7 @@ import hoc.tot.nhan.entity.User;
 import hoc.tot.nhan.exception.AppException;
 import hoc.tot.nhan.exception.ErrorCode;
 import hoc.tot.nhan.mapper.UserMapper;
+import hoc.tot.nhan.repository.RoleRepository;
 import hoc.tot.nhan.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ import java.util.List;
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     UserRepository userRepository;
+    RoleRepository roleRepository;
     UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -46,7 +48,7 @@ public class UserService {
         HashSet<String> roles = new HashSet<String>();
         roles.add(Role.USER.name());
 
-        user.setRoles(roles);
+//        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
@@ -59,8 +61,13 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
 
-        // update user request to user
         userMapper.updateUser(user, request);
+        var password = passwordEncoder.encode(request.getPassword());
+        user.setPassword(password);
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
+
         // return user to user response
         return userMapper.toUserResponse(userRepository.save(user));
     }

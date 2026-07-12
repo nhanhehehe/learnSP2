@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 @Slf4j
@@ -27,12 +28,12 @@ public class initApplication {
         return args -> {
             if (userRepository.findByUsername("admin").isEmpty()) {
 
-                HashSet<String> roles = new HashSet<String>();
+                var roles = new HashSet<>();
                 roles.add(Role.ADMIN.name());
                 User user = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
-                        .roles(roles)
+//                        .roles(roles)
                         .build();
                 userRepository.save(user);
                 log.warn("admin created successfully");
