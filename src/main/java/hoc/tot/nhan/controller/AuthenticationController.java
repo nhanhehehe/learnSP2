@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import hoc.tot.nhan.dto.request.ApiResponse;
 import hoc.tot.nhan.dto.request.AuthenticationRequest;
 import hoc.tot.nhan.dto.request.IntrospectRequest;
+import hoc.tot.nhan.dto.request.LogoutRequest;
 import hoc.tot.nhan.dto.response.AuthenticationResponse;
 import hoc.tot.nhan.dto.response.IntrospectResponse;
 import hoc.tot.nhan.service.AuthenticationService;
@@ -35,7 +36,14 @@ public class AuthenticationController {
     @PostMapping("/introspect")
     ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
         return ApiResponse.<IntrospectResponse>builder()
-                .result(authenticationService.verifyToken(request))
+                .result(authenticationService.introspect(request))
+                .build();
+    }
+
+    @PostMapping("/log-out")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder()
                 .build();
     }
 }
