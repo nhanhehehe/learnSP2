@@ -1,10 +1,7 @@
 package hoc.tot.nhan.controller;
 
 import com.nimbusds.jose.JOSEException;
-import hoc.tot.nhan.dto.request.ApiResponse;
-import hoc.tot.nhan.dto.request.AuthenticationRequest;
-import hoc.tot.nhan.dto.request.IntrospectRequest;
-import hoc.tot.nhan.dto.request.LogoutRequest;
+import hoc.tot.nhan.dto.request.*;
 import hoc.tot.nhan.dto.response.AuthenticationResponse;
 import hoc.tot.nhan.dto.response.IntrospectResponse;
 import hoc.tot.nhan.service.AuthenticationService;
@@ -44,6 +41,14 @@ public class AuthenticationController {
     ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
         authenticationService.logout(request);
         return ApiResponse.<Void>builder()
+                .build();
+    }
+
+    @PostMapping("/refresh-token")
+    ApiResponse<AuthenticationResponse> logout(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+        var token = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(token)
                 .build();
     }
 }
