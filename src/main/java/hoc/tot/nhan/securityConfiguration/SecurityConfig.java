@@ -26,7 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
 
 
-    private final String[] allowedEndpoints = {"/users", "/auth/token", "/auth/introspect", "/auth/log-out"};
+    private final String[] allowedEndpoints = {"/users", "/auth/token", "/auth/introspect", "/auth/log-out", "/auth/refresh-token"};
 
     @Autowired
     private CustomDecoder  customDecoder;

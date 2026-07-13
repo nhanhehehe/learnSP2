@@ -8,6 +8,7 @@ import com.nimbusds.jwt.SignedJWT;
 import hoc.tot.nhan.dto.request.AuthenticationRequest;
 import hoc.tot.nhan.dto.request.IntrospectRequest;
 import hoc.tot.nhan.dto.request.LogoutRequest;
+import hoc.tot.nhan.dto.request.RefreshRequest;
 import hoc.tot.nhan.dto.response.AuthenticationResponse;
 import hoc.tot.nhan.dto.response.IntrospectResponse;
 import hoc.tot.nhan.entity.InvalidatedToken;
@@ -138,6 +139,30 @@ public class AuthenticationService {
 
 
     }
+
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+        SignedJWT jwt = verifyToken(request.getToken());
+        var jid = jwt.getJWTClaimsSet().getJWTID();
+        var expiryTime = jwt.getJWTClaimsSet().getExpirationTime();
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jid)
+                .expiryTime(expiryTime)
+                .build();
+
+        invalidatedRepository.save(invalidatedToken);
+
+        var username = jwt.getJWTClaimsSet().getSubject();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
+
+        var token = generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
+    }
+
 
     public String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
