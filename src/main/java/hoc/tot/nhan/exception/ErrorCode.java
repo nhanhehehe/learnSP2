@@ -9,14 +9,14 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(69, "uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALIDKEY(99, "uncategorized exception", HttpStatus.BAD_REQUEST ),
     USER_EXISTED(1001, "user existed", HttpStatus.BAD_REQUEST),
-    USERNAME_INVALID(1003, "username must be at least 3 characters", HttpStatus.BAD_REQUEST),
-    PASSWORD_INVALID(1002, "password must be at least 8 characters", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID(1002, "username must be at least {min} characters", HttpStatus.BAD_REQUEST),
+    PASSWORD_INVALID(1003, "password must be at least {min} characters", HttpStatus.BAD_REQUEST),
     EMAIL_INVALID(1004, "email is not valid", HttpStatus.BAD_REQUEST),
     USERNAME_NOT_EXISTED(1005, "Username is not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "unauthenticated", HttpStatus.UNAUTHORIZED),
     USER_NOT_EXISTED(1007, "user does not exist",  HttpStatus.NOT_FOUND),
     UNAUTHORIZED(1008, "unauthorized",  HttpStatus.FORBIDDEN),
-    INVALID_YEAR(1009,"user must be at least 18 years old", HttpStatus.BAD_REQUEST),
+    INVALID_YEAR(1009,"user must be at least {min}", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode ) {
