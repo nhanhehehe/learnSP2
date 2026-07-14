@@ -43,7 +43,7 @@ public class CustomDecoder implements JwtDecoder {
             throw new JwtException(e.getMessage());
         }
 
-        if(Objects.nonNull(nimbusJwtDecoder)){
+        if(Objects.isNull(nimbusJwtDecoder)){
 
             SecretKeySpec secretKey = new SecretKeySpec(SIGNER_KEY.getBytes(), "HS512");
             nimbusJwtDecoder = NimbusJwtDecoder
