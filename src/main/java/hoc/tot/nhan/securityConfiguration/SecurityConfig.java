@@ -36,7 +36,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
-        httpSecurity.cors((cors)-> cors.configurationSource(urlBasedCorsConfigurationSource()));
+
+        httpSecurity.cors((cors) -> cors.configurationSource(urlBasedCorsConfigurationSource()));
+
 
         httpSecurity.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests.requestMatchers(HttpMethod.POST, allowedEndpoints)
@@ -69,15 +71,28 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedMethod("*");
+        configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-
     }
+
+    // chưa biết cách dùng corsFilter() trong filter, vì phải tuân theo thứ tự filter nên dùng cách UrlBased...
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.addAllowedOrigin("*");
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.addAllowedMethod("*");
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//        return new CorsFilter(source);
+//    }
+
 
     // config key va algorithm de spring verify token
 //    @Bean
