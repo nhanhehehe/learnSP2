@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @EnableMethodSecurity
 @Service
@@ -45,7 +46,7 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        HashSet<String> roles = new HashSet<String>();
+        Set<String> roles = new HashSet<String>();
         roles.add(Role.USER.name());
 
 //        user.setRoles(roles);
