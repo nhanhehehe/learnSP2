@@ -1,0 +1,3 @@
+jwt:
+  token-duration: 7200
+  refresh-duration: 720000
