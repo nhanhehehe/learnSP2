@@ -9,7 +9,7 @@ spring:
   datasource:
     url: ${DBMS-URL:jdbc:mysql://localhost:3306/user_system}
     username: ${DBMS-USERNAME:root}
-    password: ${DBMS-PASSWORD:-secret-pw}
+    password: ${DBMS-PASSWORD:my-secret-pw}
   jpa:
     hibernate:
       ddl-auto: update
