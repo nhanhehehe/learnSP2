@@ -24,12 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Date;
 import java.util.StringJoiner;
 import java.util.UUID;
@@ -43,6 +45,7 @@ public class AuthenticationService {
 
     UserRepository userRepository;
     InvalidatedRepository invalidatedRepository;
+    PasswordEncoder passwordEncoder;
 
     @NonFinal
     // annotation nay khong phai cua lombok
@@ -58,7 +61,7 @@ public class AuthenticationService {
     protected long REFRESH_DURATION;
 
     public AuthenticationResponse authenthicate (AuthenticationRequest request) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
 

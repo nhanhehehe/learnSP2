@@ -58,7 +58,7 @@ public class UserController {
 
         log.info("username: {}", authentication.getName());
         authentication.getAuthorities().forEach(auth -> {log.info(auth.getAuthority());});
-
+//        authentication.getAuthorities().forEach(auth -> auth.getAuthority().);
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getAllUsers())
                 .build();
